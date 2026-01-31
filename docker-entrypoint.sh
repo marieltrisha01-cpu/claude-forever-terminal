@@ -51,6 +51,10 @@ echo "💡 Terminal is ready! Connect from your phone using Render Shell."
 echo "🌟 This container will stay alive. Your tmux sessions persist!"
 echo ""
 
+# Start a dummy web server to keep Render health checks happy
+echo "🌐 Starting health check server on port ${PORT:-80}..."
+node -e "const http = require('http'); http.createServer((req, res) => { res.writeHead(200); res.end('ASTRAL Terminal is Online'); }).listen(process.env.PORT || 80);" &
+
 # Keep container running
 echo "♾️  Running indefinitely... (Ctrl+C to stop)"
 sleep infinity
