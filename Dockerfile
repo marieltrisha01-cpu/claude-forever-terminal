@@ -26,6 +26,7 @@ RUN npm install -g @anthropic-ai/claude-code \
     && npm install -g @atlassian/forge \
     && npm install -g opencode \
     && npm install -g minimax-cli \
+    && npm install -g @google/gemini-cli \
     && npm install -g @atlassian/cli || echo "Some packages failed but continuing..."
 
 # Setup SSH server
