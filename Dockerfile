@@ -21,10 +21,12 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Claude Code CLI globally
-RUN npm install -g @anthropic-ai/claude-code || \
-    npm install -g @anthropic-ai/claude || \
-    echo "Claude CLI will be installed manually"
+# Install AI Development CLIs
+RUN npm install -g @anthropic-ai/claude-code \
+    && npm install -g @atlassian/forge \
+    && npm install -g opencode \
+    && npm install -g minimax-cli \
+    && npm install -g @atlassian/cli || echo "Some packages failed but continuing..."
 
 # Setup SSH server
 RUN mkdir -p /var/run/sshd /root/.ssh \
@@ -35,9 +37,12 @@ RUN mkdir -p /var/run/sshd /root/.ssh \
 # Configure tmux
 COPY .tmux.conf /root/.tmux.conf
 
-# Create workspace directory
-RUN mkdir -p /workspace
+# Create workspace and data directories
+RUN mkdir -p /workspace /data
 WORKDIR /workspace
+
+# Symlink persistent data if needed (Render Disks)
+# We will use /data for persistent storage
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/
